@@ -18,6 +18,7 @@ pkgs.mkShell {
 
   # Run/link time deps
   buildInputs = [
+    pkgs.llvmPackages_13.libraries.libcxx
     pkgs.llvmPackages_13.libllvm
   ];
 
