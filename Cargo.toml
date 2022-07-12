@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "llvm-rs",
+    "llvm_c_2-sys",
+]
