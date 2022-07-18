@@ -1,30 +1,31 @@
-use std::process::Command;
-
 extern crate bindgen;
+extern crate cmake;
 
 fn main() {
-    let llvm_libdir = Command::new("../llvm_c_2/llvm-config")
-        .arg("--libdir")
-        .output()
-        .unwrap();
-    let llvm_libdir = String::from_utf8(llvm_libdir.stdout).unwrap();
+    let llvmc2_dir_out = cmake::Config::new("llvm_c_2")
+        .build_target("llvm_c_2")
+        .build();
 
     let cwd = std::env::current_dir().unwrap();
+    let llvmc2_dir = cwd.join("llvm_c_2");
+    let llvmc2_dir_include = llvmc2_dir.join("include");
 
-    let llvmc2_out_dir = cwd.join("../llvm_c_2/build");
-    let llvmc2_include_dir = cwd.join("../llvm_c_2/include");
+    let llvm_libdir = get_llvm_libdir();
 
+    println!(
+        "cargo:rustc-link-search=native={}/build",
+        llvmc2_dir_out.display()
+    );
     println!("cargo:rustc-link-search={}", llvm_libdir);
-    println!("cargo:rustc-link-search={}", llvmc2_out_dir.display());
 
-    println!("cargo:rustc-link-lib=llvm_c_2");
+    println!("cargo:rustc-link-lib=static=llvm_c_2");
     println!("cargo:rustc-link-lib=c++");
     println!("cargo:rustc-link-lib=LLVM-13");
 
     println!("cargo:rerun-if-changed=src/wrapper.h");
 
     let bindings = bindgen::Builder::default()
-        .clang_args(&[&format!("-I{}", llvmc2_include_dir.display())])
+        .clang_args(&[&format!("-I{}", llvmc2_dir_include.display())])
         .header("src/wrapper.h")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         .generate()
@@ -33,4 +34,12 @@ fn main() {
     bindings
         .write_to_file("src/bindings.rs")
         .expect("Couldn't write bindings!");
+}
+
+fn get_llvm_libdir() -> String {
+    let cmd = std::process::Command::new("llvm_c_2/llvm-config")
+        .arg("--libdir")
+        .output()
+        .unwrap();
+    String::from_utf8(cmd.stdout).unwrap()
 }
