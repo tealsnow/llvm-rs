@@ -29,11 +29,11 @@ fn main() {
         .header("src/wrapper.h")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         .generate()
-        .expect("Unable to generate bindings");
+        .expect("bindings should be able to generate");
 
     bindings
         .write_to_file("src/bindings.rs")
-        .expect("Couldn't write bindings!");
+        .expect("bindings file should be able to be written");
 }
 
 fn get_llvm_libdir() -> String {

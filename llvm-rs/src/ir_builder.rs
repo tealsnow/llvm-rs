@@ -25,7 +25,7 @@ impl BasicBlock {
             c::llvm_BasicBlock_create(
                 ctx.ptr,
                 str_ptr(name),
-                name.len() as u64,
+                name.len(),
                 parent.as_ptr(),
                 insert_before.map(|bb| bb.ptr).unwrap_or(null_mut()),
             )
@@ -64,7 +64,7 @@ impl IRBuilder {
                 lhs.as_ptr(),
                 rhs.as_ptr(),
                 str_ptr(name),
-                name.len() as u64,
+                name.len(),
             );
             Value::from_ptr(ptr)
         }

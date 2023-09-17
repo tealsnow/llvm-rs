@@ -91,7 +91,7 @@ impl Function {
                 linkage as u32,
                 addr_space,
                 str_ptr(name),
-                name.len() as u64,
+                name.len(),
                 if let Some(m) = module {
                     m.ptr
                 } else {

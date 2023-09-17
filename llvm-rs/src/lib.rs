@@ -83,7 +83,7 @@ impl Module {
         let ptr = unsafe {
             c::llvm_Module_create(
                 str_ptr(name),
-                name.len() as u64,
+                name.len(),
                 ctx.map(|s| s.ptr).unwrap_or(null_mut()),
             )
         };

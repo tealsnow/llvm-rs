@@ -123,7 +123,7 @@ impl FunctionType {
             c::llvm_FunctionType_get(
                 result.ptr,
                 params.as_ptr() as *const c::llvm_TypeRef,
-                params.len() as u64,
+                params.len(),
                 is_var_arg,
             )
         };
