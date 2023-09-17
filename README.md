@@ -6,6 +6,6 @@ Rust bindings for [`llvm_c_2`](https://github.com/tealsnow/llvm_c_2)
 
 Requirements:
 
-- a c++ compiler (c++17 compatible)
+- C++17 compatible compiler
 - cmake
-- llvm-14
+- llvm-16
