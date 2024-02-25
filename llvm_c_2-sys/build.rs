@@ -27,7 +27,7 @@ fn main() {
     let bindings = bindgen::Builder::default()
         .clang_args(&[&format!("-I{}", llvmc2_dir_include.display())])
         .header("src/wrapper.h")
-        .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+        .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
         .generate()
         .expect("bindings should be able to generate");
 
